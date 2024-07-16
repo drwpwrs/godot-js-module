@@ -227,7 +227,7 @@ void JavaScriptLanguage::get_reserved_words(List<String> *p_words) const {
 	}
 }
 
-bool JavaScriptLanguage::is_control_flow_keyword(String p_keyword) const {
+bool JavaScriptLanguage::is_control_flow_keyword(const String &p_keyword) const {
 	return p_keyword == "if" ||
 			p_keyword == "else" ||
 			p_keyword == "return" ||
@@ -263,7 +263,7 @@ Ref<Script> JavaScriptLanguage::make_template(const String &p_template, const St
 	return javaScript;
 }
 
-Vector<ScriptLanguage::ScriptTemplate> JavaScriptLanguage::get_built_in_templates(StringName p_object) {
+Vector<ScriptLanguage::ScriptTemplate> JavaScriptLanguage::get_built_in_templates(const StringName &p_object) {
 	Vector<ScriptLanguage::ScriptTemplate> templates;
 #ifdef TOOLS_ENABLED
 	constexpr int len = 2;

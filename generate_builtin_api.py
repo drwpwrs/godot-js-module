@@ -171,6 +171,15 @@ IGNORED_PROPS = {
         "to_int32_array",
         "to_int64_array",
         "has_encoded_var",
+        "get_string_from_utf8_strict",
+        "get_string_from_utf16_strict",
+        "get_string_from_utf32_strict",
+        "get_string_from_wchar_strict",
+        "get_string_parse_error",
+        "validate_utf8",
+        "validate_utf16",
+        "validate_utf32",
+        "validate_wchar"
     ],
 }
 

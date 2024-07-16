@@ -88,12 +88,12 @@ public:
 	virtual Error execute_file(const String &p_path);
 
 	virtual void get_reserved_words(List<String> *p_words) const override;
-	virtual bool is_control_flow_keyword(String p_keywords) const override;
+	virtual bool is_control_flow_keyword(const String &p_keywords) const override;
 	virtual void get_comment_delimiters(List<String> *p_delimiters) const override;
 	virtual void get_string_delimiters(List<String> *p_delimiters) const override;
 
 	virtual Ref<Script> make_template(const String &p_template, const String &p_class_name, const String &p_base_class_name) const override;
-	virtual Vector<ScriptTemplate> get_built_in_templates(StringName p_object) override;
+	virtual Vector<ScriptTemplate> get_built_in_templates(const StringName &p_object) override;
 	virtual bool is_using_templates() override { return true; }
 
 	virtual Script *create_script() const override;
@@ -134,7 +134,7 @@ public:
 	virtual void get_recognized_extensions(List<String> *p_extensions) const override;
 	virtual void get_public_functions(List<MethodInfo> *p_functions) const override {}
 	virtual void get_public_constants(List<Pair<String, Variant>> *p_constants) const override {}
-	virtual void get_public_annotations(List<MethodInfo> *p_annotations) const override{};
+	virtual void get_public_annotations(List<MethodInfo> *p_annotations) const override {};
 
 	virtual void profiling_start() override {}
 	virtual void profiling_stop() override {}
@@ -148,6 +148,14 @@ public:
 	virtual String get_global_class_name(const String &p_path, String *r_base_type = NULL, String *r_icon_path = NULL) const override { return String(); }
 
 	static String globalize_relative_path(const String &p_relative, const String &p_base_dir);
+
+	void get_doc_comment_delimiters(List<String> *p_delimiters) const override {}
+	void reload_scripts(const Array &p_scripts, bool p_soft_reload) override {
+		for (const Ref<JavaScript> s : p_scripts) {
+			reload_script(s, p_soft_reload);
+		}
+	}
+	void profiling_set_save_native_calls(bool p_enable) override {}
 
 	JavaScriptLanguage();
 	virtual ~JavaScriptLanguage();

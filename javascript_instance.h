@@ -63,7 +63,8 @@ public:
 	virtual Ref<Script> get_script() const override;
 	virtual ScriptLanguage *get_language() override;
 
-	/* TODO */ virtual void notification(int p_notification) override{};
+	/* TODO */ virtual void notification(int p_notification, bool p_reversed = false) override {};
+	virtual void validate_property(PropertyInfo &p_property) const override {};
 
 	JavaScriptInstance();
 	~JavaScriptInstance();
