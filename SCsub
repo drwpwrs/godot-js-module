@@ -40,9 +40,9 @@ if JS_ENGINE == "quickjs":
     import thirdparty.quickjs.builtin_binding_generator
 
     thirdparty.quickjs.builtin_binding_generator.generate_builtin_bindings()
-    version = open("thirdparty/quickjs/quickjs/VERSION.txt", "r").read().split("\n")[0]
+    version = open("thirdparty/quickjs/quickjs/VERSION", "r").readline(0).strip()
     quickjs_env = env_modules.Clone()
-    quickjs_env.Append(CPPDEFINES={"QUICKJS_CONFIG_VERSION": '"' + version + '"'})
+    quickjs_env.Append(CPPDEFINES={"QUICKJS_CONFIG_VERSION": '""' + version + '""'})
     quickjs_env.Append(CPPDEFINES=["CONFIG_BIGNUM"])
     if "release" not in (quickjs_env["target"] or ""):
         quickjs_env.Append(CPPDEFINES={"DUMP_LEAKS": 1})

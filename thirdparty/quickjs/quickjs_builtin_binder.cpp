@@ -1015,7 +1015,7 @@ void QuickJSBuiltinBinder::bind_builtin_propties_manually() {
 						CharString cs;
 						cs.resize(ptr->size() + 1);
 						memcpy(cs.ptrw(), ptr->ptr(), ptr->size());
-						cs[ptr->size()] = 0;
+						cs.set(ptr->size(), 0);
 						ret = cs.get_data();
 					}
 					return QuickJSBinder::to_js_string(ctx, ret);

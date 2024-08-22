@@ -50,7 +50,7 @@ public:
 			return;
 		}
 	}
-	virtual String _get_name() const override { return "JavaScript"; }
+	virtual String get_name() const override { return "JavaScript"; }
 };
 
 #endif

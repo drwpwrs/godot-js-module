@@ -230,7 +230,7 @@ static String format_enum_name(const String &enum_name) {
 }
 
 static String get_type_name(const String &p_type) {
-	if (p_type.is_empty())
+	if (p_type.is_empty() || p_type == "void")
 		return "void";
 	if (p_type == "int" || p_type == "float")
 		return "number";
@@ -242,8 +242,10 @@ static String get_type_name(const String &p_type) {
 		return "any[]";
 	if (p_type == "Dictionary")
 		return "object";
-	if (p_type == "Variant")
+	if (p_type == "Variant" || p_type.contains("*"))
 		return "any";
+	if (p_type == "StringName")
+		return "StringName | string";
 	return p_type;
 }
 
@@ -276,6 +278,11 @@ String _export_method(const DocData::MethodDoc &p_method, bool is_function = fal
 				}
 			} else {
 				default_value += arg.default_value;
+				// we don't want to have pointers or addresses in TS
+				default_value = default_value
+										.replace("&", "")
+										.replace("*", "")
+										.replace("**", "");
 			}
 		}
 
@@ -601,7 +608,11 @@ void JavaScriptPlugin::_export_typescript_declare_file(const String &p_path) {
 		if (ignored_classes.has(class_doc.name)) {
 			continue;
 		}
-		class_doc.name = get_type_name(class_doc.name);
+
+		if (class_doc.name != "StringName") {
+			class_doc.name = get_type_name(class_doc.name);
+		}
+
 		if (class_doc.name.begins_with("@")) {
 			HashMap<String, Vector<const DocData::ConstantDoc *>> enumerations;
 			if (class_doc.name == "@GlobalScope" || class_doc.name == "@GDScript") {

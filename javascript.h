@@ -111,6 +111,9 @@ public:
 
 	virtual const Variant get_rpc_config() const override { return rpc_config; }
 
+	virtual bool is_abstract() const override { return false; }
+	virtual String get_class_icon_path() const override { return ""; }
+
 	JavaScript();
 	virtual ~JavaScript();
 };
