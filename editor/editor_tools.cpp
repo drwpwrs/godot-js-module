@@ -302,7 +302,6 @@ static String get_type_name(const String &p_type) {
     if (p_type.is_empty() || p_type == "void")
         return "void";
     
-    // Check if it's an array type
     if (p_type.ends_with("[]")) {
         String base_type = p_type.substr(0, p_type.length() - 2);
         return "Array<" + get_type_name(base_type) + ">";
@@ -399,7 +398,7 @@ String _export_method(const DocData::MethodDoc &p_method, bool is_function = fal
 	return apply_pattern(method_template, dict);
 }
 
-String _export_class(const DocData::ClassDoc &class_doc) {
+String _export_class(const DocData::ClassDoc &class_doc, const DocTools *doc) {
 	String class_template = "\n"
 							"\t/** ${brief_description}\n"
 							"\t ${description} */\n"
@@ -432,6 +431,31 @@ String _export_class(const DocData::ClassDoc &class_doc) {
 	if (removed_members.has(class_doc.name)) {
 		ignore_members = removed_members[class_doc.name];
 	}
+
+	auto is_method_overridden = [&](const String &method_name) -> bool {
+		if (class_doc.inherits.is_empty()) return true;
+		const DocData::ClassDoc *parent_class = &doc->class_list[class_doc.inherits];
+		while (parent_class) {
+			for (const DocData::MethodDoc &method : parent_class->methods) {
+				if (method.name == method_name) return false;
+			}
+			if (parent_class->inherits.is_empty()) break;
+			parent_class = &doc->class_list[parent_class->inherits];
+		}
+		return true;
+	};
+	auto is_property_overridden = [&](const String &property_name) -> bool {
+		if (class_doc.inherits.is_empty()) return true;
+		const DocData::ClassDoc *parent_class = &doc->class_list[class_doc.inherits];
+		while (parent_class) {
+			for (const DocData::PropertyDoc &prop : parent_class->properties) {
+				if (prop.name == property_name) return false;
+			}
+			if (parent_class->inherits.is_empty()) break;
+			parent_class = &doc->class_list[parent_class->inherits];
+		}
+		return true;
+	};
 
 	String constants = "";
 	HashMap<String, Vector<const DocData::ConstantDoc *>> enumerations;
@@ -502,7 +526,7 @@ String _export_class(const DocData::ClassDoc &class_doc) {
 	Vector<DocData::MethodDoc> method_list = class_doc.methods;
 	String properties = "";
 	for (const DocData::PropertyDoc &prop_doc : class_doc.properties) {
-		if (ignore_members.has(prop_doc.name))
+		if (ignore_members.has(prop_doc.name) || !is_property_overridden(prop_doc.name))
 			continue;
 
 		String prop_str = "\n"
@@ -570,7 +594,7 @@ String _export_class(const DocData::ClassDoc &class_doc) {
 	String methods = "";
 	for (int i = 0; i < method_list.size(); i++) {
 		const DocData::MethodDoc &method_doc = method_list[i];
-		if (ignore_members.has(method_doc.name))
+		if (ignore_members.has(method_doc.name) || !is_method_overridden(method_doc.name))
 			continue;
 
 		if (method_doc.name == class_doc.name) {
@@ -753,7 +777,7 @@ void JavaScriptPlugin::_export_typescript_declare_file(const String &p_path) {
 			}
 			continue;
 		}
-		classes += _export_class(class_doc);
+		classes += _export_class(class_doc, doc);
 	}
 	dict["classes"] = classes;
 	dict["constants"] = constants;
