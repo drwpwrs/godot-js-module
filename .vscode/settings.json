@@ -1,0 +1,27 @@
+{
+	"C_Cpp.default.includePath": [
+		"${workspaceFolder}/godot",
+		"${workspaceFolder}/godot/core",
+		"${workspaceFolder}/godot/servers",
+		"${workspaceFolder}/godot/scene",
+		"${workspaceFolder}/godot/modules",
+		"${workspaceFolder}/**"
+	],
+	"C_Cpp.files.exclude": ["${workspaceFolder}/godot/modules/javascript/**"],
+	"C_Cpp.default.defines": [
+		"TOOLS_ENABLED",
+		"DEBUG_ENABLED",
+		"DEBUG_METHODS_ENABLED"
+	],
+	"C_Cpp.default.cppStandard": "c++14",
+	"C_Cpp.default.intelliSenseMode": "clang-x64",
+	"files.associations": {
+		"*.gd": "gdscript",
+		"*.tscn": "gdresource",
+		"*.tres": "gdresource",
+		"*.import": "yaml"
+	},
+	"editor.formatOnSave": true,
+	"editor.rulers": [100],
+	"C_Cpp.clang_format_style": "{ BasedOnStyle: LLVM, IndentWidth: 4, ColumnLimit: 100 }"
+}

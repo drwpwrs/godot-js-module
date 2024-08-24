@@ -262,7 +262,7 @@
 // 			"Basis": ["is_equal_approx"],
 // 			"Plane": ["intersects_segment", "intersects_ray", "intersect_3"],
 // 			"AABB": ["end"],
-// 			"Transform": ["xform", "xform_inv"],
+// 			"Transform3D": ["xform", "xform_inv"],
 // 		},
 // 		"added": {
 // 			"Object": [
@@ -478,7 +478,7 @@
 // 			"Basis": ["is_equal_approx"],
 // 			"Plane": ["intersects_segment", "intersects_ray", "intersect_3"],
 // 			"AABB": ["end"],
-// 			"Transform": ["xform", "xform_inv"],
+// 			"Transform3D": ["xform", "xform_inv"],
 // 		},
 // 		"added": {
 // 			"Object": [

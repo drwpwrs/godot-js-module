@@ -7,5 +7,6 @@
 *.os
 *.gen.cpp
 *.gen.json
-.vscode
 .idea
+
+godot/
